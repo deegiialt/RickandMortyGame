@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import CharacterCard from "./components/CharacterCard";
 import Banner from "./components/Banner"
-// import Wrapper from "./components/Wrapper";
-// import Title from "./components/Title";
+import { Col, Row, Container } from "./components/Grid";
 import characters from "./characters.json";
 import "./App.css";
 
@@ -10,26 +9,55 @@ class App extends Component {
   // Setting this.state.characters to the characters json array
   state = {
     characters,
+    correct: "false",
     guessed: [],
-    topScore: ""
+    score: 0,
+    topScore: 0
   };
 
   handleClick = id => {
-    // // Filter this.state.characters for characters with an id not equal to the id being removed
-    // const characters = this.state.characters.filter(character => characters.id !== id);
-    // // Set this.state.characters equal to the new characters array
-    // this.setState({ characters });
-    const characters = this.state.characters.filter(character => characters.id == id);
-    this.setState({characters})
-  };
+    // id.preventDefault();
+    let correct = this.state.correct;
+    let guessed = this.state.guessed;
+    let score = this.state.score;
+    let topScore = this.state.topScore;
+
+    if(this.state.guessed.indexOf(id) === -1) {
+      guessed.push(id);
+      score ++;
+      correct = "true";
+    } else {
+      if(score < topScore) {
+        topScore = score;
+      }
+      guessed= [];
+      score= 0;
+    } 
+
+    this.setState({ guessed })
+    this.setState({ score })
+    this.setState({ topScore })
+  }
+
+ shuffle = a => {
+   for (let i = a.length - 1; i > 0; i--) {
+       const j = Math.floor(Math.random() * (i + 1));
+       [a[i], a[j]] = [a[j], a[i]];
+   }
+   return a;
+ }
 
   // Map over this.state.characters and render a characterCard component for each character object
   render() {
+    {this.shuffle(this.state.characters)}
     return (
+      <Container fluid>
+      <Row>
+      <Col size="md-12">
       <div className="wrapper">
       <Banner 
         guessed={this.state.guessed}
-        currentScore={this.state.currentScore}
+        score={this.state.score}
         topScore={this.state.topScore}
       />
         {this.state.characters.map(character => (
@@ -37,10 +65,13 @@ class App extends Component {
             id={character.id}
             key={character.id}
             image={character.image}
-            onClick={this.handleClick}
+            onClick={() => this.handleClick(character.id)}
           />
         ))}
       </div>
+      </Col>
+      </Row>
+      </Container>
     );
   }
 }
