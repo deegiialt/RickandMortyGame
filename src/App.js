@@ -50,9 +50,10 @@ class App extends Component {
     return (
       <div>
         <Banner 
-          guessed.={this.state.guessed}
+          guessed={this.state.guessed}
           score={this.state.score}
           topScore={this.state.topScore}
+          correct={this.state.correct}
         />
         <div className="container">
         {this.state.characters.map(character => (
@@ -60,7 +61,6 @@ class App extends Component {
             id={character.id}
             key={character.id}
             image={character.image}
-            correct={this.state.correct}
             onClick={() => this.handleClick(character.id)}
           />
         ))}
