@@ -48,12 +48,13 @@ class App extends Component {
   render() {
     {this.shuffle(this.state.characters)}
     return (
-      <div className="wrapper">
-      <Banner 
-        guessed={this.state.guessed}
-        score={this.state.score}
-        topScore={this.state.topScore}
-      />
+      <div>
+        <Banner 
+          guessed.={this.state.guessed}
+          score={this.state.score}
+          topScore={this.state.topScore}
+        />
+        <div className="container">
         {this.state.characters.map(character => (
           <CharacterCard
             id={character.id}
@@ -63,6 +64,7 @@ class App extends Component {
             onClick={() => this.handleClick(character.id)}
           />
         ))}
+        </div>
       </div>
     );
   }
