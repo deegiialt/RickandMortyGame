@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import CharacterCard from "./components/CharacterCard";
 import Banner from "./components/Banner"
-import { Col, Row, Container } from "./components/Grid";
 import characters from "./characters.json";
 import "./App.css";
 
@@ -9,14 +8,13 @@ class App extends Component {
   // Setting this.state.characters to the characters json array
   state = {
     characters,
-    correct: "false",
+    correct: "",
     guessed: [],
     score: 0,
     topScore: 0
   };
 
   handleClick = id => {
-    // id.preventDefault();
     let correct = this.state.correct;
     let guessed = this.state.guessed;
     let score = this.state.score;
@@ -25,18 +23,17 @@ class App extends Component {
     if(this.state.guessed.indexOf(id) === -1) {
       guessed.push(id);
       score ++;
-      correct = "true";
+      correct = "correctly!";
     } else {
       if(score < topScore) {
         topScore = score;
       }
       guessed= [];
       score= 0;
+      correct = "wrong!";
     } 
 
-    this.setState({ guessed })
-    this.setState({ score })
-    this.setState({ topScore })
+    this.setState({ guessed, topScore, correct, score })
   }
 
  shuffle = a => {
@@ -51,9 +48,6 @@ class App extends Component {
   render() {
     {this.shuffle(this.state.characters)}
     return (
-      <Container fluid>
-      <Row>
-      <Col size="md-12">
       <div className="wrapper">
       <Banner 
         guessed={this.state.guessed}
@@ -65,13 +59,11 @@ class App extends Component {
             id={character.id}
             key={character.id}
             image={character.image}
+            correct={this.state.correct}
             onClick={() => this.handleClick(character.id)}
           />
         ))}
       </div>
-      </Col>
-      </Row>
-      </Container>
     );
   }
 }
